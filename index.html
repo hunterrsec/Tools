@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReconKit Pro — Security Research Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reconkit-pro.css">
+</head>
+<body>
+<div class="motion-field" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<div id="toast">✓ Copied to clipboard</div>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-icon">⬡</div>
+      Recon<span>Kit</span> Pro
+    </a>
+    <div class="badge">SECURITY RESEARCH SUITE v2.0</div>
+    <div class="theme-switcher" aria-label="Theme selector">
+      <button class="theme-btn active" type="button" data-theme="hacker" onclick="setTheme('hacker',this)">Hacker</button>
+      <button class="theme-btn" type="button" data-theme="neon" onclick="setTheme('neon',this)">Neon</button>
+      <button class="theme-btn" type="button" data-theme="ghost" onclick="setTheme('ghost',this)">Ghost</button>
+      <button class="theme-btn" type="button" data-theme="ember" onclick="setTheme('ember',this)">Ember</button>
+    </div>
+  </div>
+  <nav id="mainNav">
+    <button class="active" onclick="switchTab('google')">
+      🔍 Google Dorks <span class="tab-count">600+</span>
+    </button>
+    <button onclick="switchTab('github')">
+      🐙 GitHub Recon <span class="tab-count">1600+</span>
+    </button>
+    <button onclick="switchTab('jwt')">
+      🔐 JWT Inspector
+    </button>
+    <button onclick="switchTab('secrets')">
+      [S] Secret Scanner
+    </button>
+    <button onclick="switchTab('urlintel')">
+      [URL] URL Intel
+    </button>
+    <button onclick="switchTab('policy')">
+      [P] Policy Builder
+    </button>
+    <button onclick="switchTab('headers')">
+      [H] Header Checker
+    </button>
+    <button onclick="switchTab('iframe')">
+      [IFR] Iframe Checker
+    </button>
+    <button onclick="switchTab('cookie')">
+      🍪 Cookie Analyzer
+    </button>
+    <button onclick="switchTab('privacy')">
+      Privacy & Tips
+    </button>
+  </nav>
+</header>
+
+<main>
+<section class="command-deck" aria-label="ReconKit command center">
+  <div class="deck-card">
+    <div class="deck-title"><span class="pulse-dot"></span> Premium <span>Hacker</span> Console</div>
+    <div class="deck-sub">Google and GitHub dorks, JWT attack labs, cookie posture, HTTP security headers, and iframe/clickjacking checks in one animated browser-only workspace.</div>
+  </div>
+  <div class="deck-card">
+    <div class="deck-kpi">10</div>
+    <div class="deck-label">Top-level tools</div>
+  </div>
+  <div class="deck-card">
+    <div class="deck-kpi">0</div>
+    <div class="deck-label">Server round trips</div>
+  </div>
+  <div class="deck-card">
+    <div class="deck-kpi">Live</div>
+    <div class="deck-label">Color motion themes</div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 1: GOOGLE DORKS
+══════════════════════════════════════════════════════ -->
+<div class="tab-pane active" id="tab-google">
+  <div class="section-header">
+    <div class="section-title">Google <span class="hl">Dorks</span> Techniques</div>
+    <div class="section-desc">Advanced Google search operators for OSINT and bug bounty reconnaissance</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon">📁</div><div><div class="stat-num" id="gd-count">600+</div><div class="stat-label">TOTAL DORKS</div></div></div>
+    <div class="stat-card"><div class="stat-icon">🏷️</div><div><div class="stat-num">12</div><div class="stat-label">CATEGORIES</div></div></div>
+    <div class="stat-card"><div class="stat-icon">🔎</div><div><div class="stat-num" id="gd-filtered">600+</div><div class="stat-label">SHOWING</div></div></div>
+  </div>
+  <div class="search-bar">
+    <input class="search-input" type="text" id="gdSearch" placeholder="Filter dorks..." oninput="renderGoogleDorks()">
+    <select class="search-input" id="gdCat" onchange="renderGoogleDorks()" style="max-width:180px;">
+      <option value="">All Categories</option>
+      <option>Sensitive Files</option>
+      <option>Login Pages</option>
+      <option>Config & Backup</option>
+      <option>Info Disclosure</option>
+      <option>Vulnerabilities</option>
+      <option>Cloud Storage</option>
+      <option>Database</option>
+      <option>Cameras & IoT</option>
+      <option>API Keys</option>
+      <option>Credentials</option>
+      <option>Admin Panels</option>
+      <option>Error Messages</option>
+    </select>
+    <button class="btn btn-green" onclick="copyAllGdork()">⬇ Export Visible</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>#</th>
+        <th>CATEGORY</th>
+        <th>DORK QUERY</th>
+        <th>DESCRIPTION</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="gdTable"></tbody>
+    </table>
+    <div class="pagination" id="gdPagination"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 2: GITHUB RECON
+══════════════════════════════════════════════════════ -->
+<div class="tab-pane" id="tab-github">
+  <div class="section-header">
+    <div class="section-title">GitHub <span class="hl">Recon</span> Dorks</div>
+    <div class="section-desc">GitHub search queries for exposed credentials, secrets, and sensitive code — 1600+ patterns</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon">🐙</div><div><div class="stat-num" id="gh-count">1600+</div><div class="stat-label">DORK PATTERNS</div></div></div>
+    <div class="stat-card"><div class="stat-icon">🔑</div><div><div class="stat-num">18</div><div class="stat-label">CATEGORIES</div></div></div>
+    <div class="stat-card"><div class="stat-icon">⚠️</div><div><div class="stat-num" id="gh-filtered">—</div><div class="stat-label">SHOWING</div></div></div>
+  </div>
+  <div class="search-bar">
+    <input class="search-input" type="text" id="ghSearch" placeholder="Search patterns..." oninput="renderGHDorks()">
+    <select class="search-input" id="ghCat" onchange="renderGHDorks()" style="max-width:200px;">
+      <option value="">All Categories</option>
+    </select>
+    <button class="btn btn-green" onclick="openGitHubSearch()">🔗 Open in GitHub</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>#</th>
+        <th>CATEGORY</th>
+        <th>SEARCH QUERY</th>
+        <th>TARGET / DESCRIPTION</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="ghTable"></tbody>
+    </table>
+    <div class="pagination" id="ghPagination"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 3: JWT INSPECTOR
+══════════════════════════════════════════════════════ -->
+<div class="tab-pane" id="tab-jwt">
+  <div class="section-header">
+    <div class="section-title">JWT <span class="hl">Inspector</span></div>
+    <div class="section-desc">Decode, encode, verify and attack-test JSON Web Tokens — all modern algorithms</div>
+  </div>
+
+  <div class="inner-tabs">
+    <button class="inner-tab active" onclick="switchInnerTab('jwt-decode','jwtInner',this)">🔓 Decode</button>
+    <button class="inner-tab" onclick="switchInnerTab('jwt-encode','jwtInner',this)">🔒 Encode</button>
+    <button class="inner-tab" onclick="switchInnerTab('jwt-verify','jwtInner',this)">✅ Verify</button>
+    <button class="inner-tab" onclick="switchInnerTab('jwt-attack','jwtInner',this)">⚡ Attack Tests</button>
+    <button class="inner-tab" onclick="switchInnerTab('jwt-info','jwtInner',this)">📖 Algorithms</button>
+  </div>
+
+  <!-- DECODE -->
+  <div class="inner-pane active" id="jwt-decode">
+    <div class="jwt-grid">
+      <div>
+        <div class="card-title"><span class="dot dot-orange"></span>JWT Token Input</div>
+        <textarea id="jwtDecodeInput" rows="5" placeholder="Paste your JWT token here...&#10;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" oninput="decodeJWT()"></textarea>
+        <div style="margin-top:10px;">
+          <div class="card-title" style="font-size:12px;margin-bottom:6px;"><span class="dot dot-orange"></span>Token Parts (Color Coded)</div>
+          <div class="jwt-display" id="jwtColored">—</div>
+        </div>
+      </div>
+      <div>
+        <div class="card-title"><span class="dot dot-cyan"></span>Header</div>
+        <div class="json-box" id="jwtHeader">—</div>
+        <div class="card-title" style="margin-top:12px;"><span class="dot dot-cyan"></span>Payload</div>
+        <div class="json-box" id="jwtPayload">—</div>
+        <div class="card-title" style="margin-top:12px;"><span class="dot dot-red"></span>Signature (base64url)</div>
+        <div class="json-box" style="color:var(--red);" id="jwtSig">—</div>
+        <div id="jwtDecodeFlags"></div>
+        <div id="jwtDecodeInfo"></div>
+      </div>
+    </div>
+    <!-- Claims Table -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title"><span class="dot dot-green"></span>Registered Claims Analysis</div>
+      <div id="claimsTable" style="color:var(--text-dim);font-size:11px;">Paste a JWT above to analyse claims.</div>
+    </div>
+  </div>
+
+  <!-- ENCODE -->
+  <div class="inner-pane" id="jwt-encode">
+    <div class="two-col">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title"><span class="dot dot-green"></span>Header</div>
+          <div class="alg-chips" id="algChips">
+            <div class="alg-chip active" onclick="selectAlg(this,'HS256')">HS256</div>
+            <div class="alg-chip" onclick="selectAlg(this,'HS384')">HS384</div>
+            <div class="alg-chip" onclick="selectAlg(this,'HS512')">HS512</div>
+            <div class="alg-chip" onclick="selectAlg(this,'RS256')">RS256*</div>
+            <div class="alg-chip" onclick="selectAlg(this,'RS384')">RS384*</div>
+            <div class="alg-chip" onclick="selectAlg(this,'RS512')">RS512*</div>
+            <div class="alg-chip" onclick="selectAlg(this,'ES256')">ES256*</div>
+            <div class="alg-chip" onclick="selectAlg(this,'PS256')">PS256*</div>
+            <div class="alg-chip" onclick="selectAlg(this,'none')" style="border-color:rgba(255,71,87,0.3);color:var(--red);">none ⚠</div>
+          </div>
+          <div style="font-size:10px;color:var(--text-dim);margin-bottom:10px;">* RS/EC/PS require PEM keys. HMAC (HS) uses shared secret.</div>
+          <textarea id="encodeHeader" rows="4" oninput="liveEncodeJWT()">{"alg":"HS256","typ":"JWT"}</textarea>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot dot-cyan"></span>Payload</div>
+          <textarea id="encodePayload" rows="8" oninput="liveEncodeJWT()">{
+  "sub": "1234567890",
+  "name": "Bug Hunter",
+  "iat": 1700000000,
+  "exp": 1700086400,
+  "role": "admin"
+}</textarea>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title"><span class="dot dot-orange"></span>Secret / Key</div>
+          <div class="input-row">
+            <span class="input-label">FORMAT:</span>
+            <select id="secretType" onchange="liveEncodeJWT()">
+              <option>UTF-8 String</option>
+              <option>Base64</option>
+              <option>Hex</option>
+            </select>
+          </div>
+          <input type="password" id="encodeSecret" value="your-secret-key" oninput="liveEncodeJWT()" placeholder="Shared secret (HMAC) or PEM private key (RS/EC)">
+          <button class="btn btn-dim" style="margin-top:8px;font-size:10px;" onclick="toggleSecretVis()">👁 Show/Hide Secret</button>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot dot-green"></span>Generated Token</div>
+          <div class="output-box" id="encodeOutput">
+            <button class="copy-corner" onclick="copyEl('encodeOutput')">⎘</button>
+            <span id="encodeOutputText" style="color:var(--text-dim);">Configure header and payload above...</span>
+          </div>
+          <div id="encodeResult"></div>
+          <button class="btn btn-green" style="margin-top:12px;width:100%;justify-content:center;" onclick="signJWT()">
+            ⚡ Sign JWT
+          </button>
+          <button class="btn btn-dim" style="margin-top:6px;width:100%;justify-content:center;" onclick="generateTimestamps()">
+            🕐 Generate Fresh Timestamps
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERIFY -->
+  <div class="inner-pane" id="jwt-verify">
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <div class="card-title"><span class="dot dot-cyan"></span>Token to Verify</div>
+          <textarea id="verifyToken" rows="5" placeholder="Paste JWT token..."></textarea>
+          <div style="margin-top:12px;">
+            <div class="input-row">
+              <span class="input-label">ALGORITHM:</span>
+              <select id="verifyAlg">
+                <option>HS256</option><option>HS384</option><option>HS512</option>
+              </select>
+            </div>
+            <div style="margin-bottom:8px;">
+              <label style="font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px;">SECRET / PUBLIC KEY</label>
+              <input type="text" id="verifySecret" placeholder="Enter HMAC secret or public key...">
+            </div>
+            <div class="input-row">
+              <label style="font-size:10px;color:var(--text-dim);cursor:pointer;">
+                <input type="checkbox" id="ignoreExp" style="margin-right:4px;"> Ignore Expiration
+              </label>
+              <label style="font-size:10px;color:var(--text-dim);cursor:pointer;margin-left:16px;">
+                <input type="checkbox" id="ignoreNbf" style="margin-right:4px;"> Ignore nbf
+              </label>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:10px;" onclick="verifyJWT()">🔍 Verify Signature</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title"><span class="dot dot-green"></span>Verification Result</div>
+          <div id="verifyResult" style="color:var(--text-dim);font-size:12px;min-height:200px;">
+            Paste a token and enter the secret to verify.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brute Force -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title"><span class="dot dot-red"></span>⚡ Secret Brute-Force (Weak Keys)</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">Test against common/weak HMAC secrets. For authorized testing only.</div>
+      <div class="input-row">
+        <textarea id="bfToken" rows="2" placeholder="Paste JWT to brute-force..." style="flex:1;"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+        <button class="btn btn-red" onclick="bruteForceJWT()">🔨 Run Brute Force</button>
+        <button class="btn btn-dim" onclick="resetBF()">↺ Reset</button>
+      </div>
+      <div id="bfResult" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- ATTACK TESTS -->
+  <div class="inner-pane" id="jwt-attack">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title"><span class="dot dot-red"></span>Test Token Input</div>
+          <textarea id="attackToken" rows="4" placeholder="Paste JWT for attack tests..." oninput="prepareAttacks()"></textarea>
+          <div style="margin-top:8px;">
+            <input type="text" id="attackSecret" placeholder="Known secret (if available)..." style="margin-bottom:6px;">
+            <button class="btn btn-red" style="width:100%;justify-content:center;" onclick="runAllAttacks()">⚡ Run All Attack Tests</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="dot dot-orange"></span>Attack Results</div>
+          <div id="attackResults" style="font-size:11px;color:var(--text-dim);">Run attack tests to see results here.</div>
+        </div>
+      </div>
+      <div>
+        <ul class="test-list" id="attackList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALGORITHMS INFO -->
+  <div class="inner-pane" id="jwt-info">
+    <div id="algInfoGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 4: COOKIE ANALYZER
+══════════════════════════════════════════════════════ -->
+<div class="tab-pane" id="tab-secrets">
+  <div class="section-header">
+    <div class="section-title">Local <span class="hl">Secret Scanner</span></div>
+    <div class="section-desc">Scan pasted code, logs, .env files, commits, and configs for tokens, private keys, connection strings, webhooks, JWTs, and high-entropy values.</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon">S</div><div><div class="stat-num" id="sec-total-stat">0</div><div class="stat-label">MATCHES</div></div></div>
+    <div class="stat-card"><div class="stat-icon">!</div><div><div class="stat-num" id="sec-critical-stat">0</div><div class="stat-label">CRITICAL</div></div></div>
+    <div class="stat-card"><div class="stat-icon">E</div><div><div class="stat-num" id="sec-entropy-stat">0</div><div class="stat-label">ENTROPY HITS</div></div></div>
+  </div>
+  <div class="premium-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-red"></span>Paste Evidence</div>
+        <textarea id="secretInput" rows="16" placeholder="Paste .env, source code, CI logs, config files, or commit snippets here. Everything stays in this browser."></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-red" onclick="scanSecrets()">Scan Secrets</button>
+          <button class="btn btn-dim" onclick="loadSampleSecrets()">Load Sample</button>
+          <button class="btn btn-dim" onclick="clearSecretScanner()">Clear</button>
+          <button class="btn btn-green" onclick="copySecretReport()">Copy Report</button>
+          <button class="btn btn-primary" onclick="copyRedactedSecrets()">Copy Redacted Text</button>
+        </div>
+        <div class="alert alert-info">Values are redacted in results. Use this for authorized review and cleanup planning.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-green"></span>Redacted Output</div>
+        <div class="snippet-box" id="secretRedacted">Run a scan to generate a redacted copy.</div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-orange"></span>Secret Risk Score</div>
+        <div class="score-panel">
+          <div class="score-ring" id="secretScoreRing"><b>0</b></div>
+          <div>
+            <div class="deck-title" style="font-size:18px;">No scan yet</div>
+            <div class="score-copy">Score is based on count, severity, private-key blocks, cloud tokens, and high-entropy unknowns.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-red"></span>Detected Secrets</div>
+        <div class="finding-list" id="secretFindings">
+          <div class="finding info"><strong>No scan yet</strong>Paste text and run the scanner.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="tab-urlintel">
+  <div class="section-header">
+    <div class="section-title">URL & Parameter <span class="hl">Intelligence</span></div>
+    <div class="section-desc">Parse URLs, classify interesting parameters, identify risky patterns, and generate a quick parameter wordlist for authorized testing notes.</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon">U</div><div><div class="stat-num" id="url-total-stat">0</div><div class="stat-label">URLS</div></div></div>
+    <div class="stat-card"><div class="stat-icon">P</div><div><div class="stat-num" id="url-param-stat">0</div><div class="stat-label">PARAMETERS</div></div></div>
+    <div class="stat-card"><div class="stat-icon">R</div><div><div class="stat-num" id="url-risk-stat">0</div><div class="stat-label">RISK FLAGS</div></div></div>
+  </div>
+  <div class="premium-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-cyan"></span>URL Input</div>
+        <textarea id="urlIntelInput" rows="13" placeholder="Paste one URL per line...&#10;https://example.com/redirect?next=https://evil.test&#10;https://app.example.com/download?file=../../etc/passwd&amp;debug=true"></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="analyzeUrlIntel()">Analyze URLs</button>
+          <button class="btn btn-dim" onclick="loadSampleUrlIntel()">Load Sample</button>
+          <button class="btn btn-dim" onclick="clearUrlIntel()">Clear</button>
+          <button class="btn btn-primary" onclick="copyUrlWordlist()">Copy Param Wordlist</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-green"></span>Parameter Wordlist</div>
+        <div class="snippet-box" id="urlWordlist">Analyze URLs to extract parameter names.</div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-orange"></span>URL Intel Score</div>
+        <div class="score-panel">
+          <div class="score-ring" id="urlScoreRing"><b>0</b></div>
+          <div>
+            <div class="deck-title" style="font-size:18px;">No URL analysis yet</div>
+            <div class="score-copy">Lower score means more parameters that deserve closer authorized review.</div>
+          </div>
+        </div>
+        <div class="mini-grid" id="urlMiniGrid"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-red"></span>Findings</div>
+        <div class="finding-list" id="urlFindings">
+          <div class="finding info"><strong>No analysis yet</strong>Paste URLs and run the analyzer.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="tab-policy">
+  <div class="section-header">
+    <div class="section-title">Security Header <span class="hl">Policy Builder</span></div>
+    <div class="section-desc">Generate a hardened baseline for CSP, HSTS, Permissions-Policy, Referrer-Policy, and anti-framing headers, plus server snippets.</div>
+  </div>
+  <div class="premium-grid">
+    <div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-cyan"></span>Policy Controls</div>
+        <div class="input-row">
+          <span class="input-label">PROFILE:</span>
+          <select id="policyProfile" onchange="buildSecurityPolicy()">
+            <option value="strict">Strict app</option>
+            <option value="api">API / JSON service</option>
+            <option value="marketing">Marketing site</option>
+            <option value="embed">Embeddable widget</option>
+          </select>
+        </div>
+        <div class="input-row">
+          <span class="input-label">CDN/SCRIPT ORIGINS:</span>
+          <input type="text" id="policyScript" placeholder="https://cdn.example.com https://analytics.example.com">
+        </div>
+        <div class="input-row">
+          <span class="input-label">IMAGE ORIGINS:</span>
+          <input type="text" id="policyImg" placeholder="https://images.example.com data:">
+        </div>
+        <div class="input-row">
+          <span class="input-label">CONNECT ORIGINS:</span>
+          <input type="text" id="policyConnect" placeholder="https://api.example.com">
+        </div>
+        <div class="input-row">
+          <label style="font-size:10px;color:var(--text-dim);cursor:pointer;"><input type="checkbox" id="policyPreload" checked> HSTS preload</label>
+          <label style="font-size:10px;color:var(--text-dim);cursor:pointer;margin-left:12px;"><input type="checkbox" id="policyNoFrame" checked> Block framing</label>
+          <label style="font-size:10px;color:var(--text-dim);cursor:pointer;margin-left:12px;"><input type="checkbox" id="policyReportOnly"> CSP report-only</label>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="buildSecurityPolicy()">Build Policy</button>
+          <button class="btn btn-primary" onclick="copyEl('policyOutput')">Copy Headers</button>
+          <button class="btn btn-dim" onclick="copyEl('policyServerSnippets')">Copy Server Snippets</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-green"></span>Generated Headers</div>
+        <div class="snippet-box" id="policyOutput">Choose a profile and build a policy.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Nginx / Apache Snippets</div>
+        <div class="snippet-box" id="policyServerSnippets">Server snippets appear here.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="tab-headers">
+  <div class="section-header">
+    <div class="section-title">HTTP <span class="hl">Header Checker</span></div>
+    <div class="section-desc">Paste response headers or try a CORS-limited fetch to score security posture, caching, CORS, cookies, and information disclosure.</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon">[H]</div><div><div class="stat-num" id="hdr-score-stat">0</div><div class="stat-label">HEADER SCORE</div></div></div>
+    <div class="stat-card"><div class="stat-icon">OK</div><div><div class="stat-num" id="hdr-pass-stat">0</div><div class="stat-label">PASSING CHECKS</div></div></div>
+    <div class="stat-card"><div class="stat-icon">!!</div><div><div class="stat-num" id="hdr-risk-stat">0</div><div class="stat-label">RISKS FOUND</div></div></div>
+  </div>
+  <div class="premium-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-cyan"></span>Response Header Input</div>
+        <div class="input-row">
+          <span class="input-label">URL:</span>
+          <input type="url" id="headerUrl" placeholder="https://example.com (optional, CORS may block reads)">
+          <button class="btn btn-primary" onclick="tryFetchHeaders()">Try Fetch</button>
+        </div>
+        <textarea id="headerInput" rows="13" placeholder="Paste raw HTTP response headers here...&#10;&#10;HTTP/2 200&#10;content-security-policy: default-src 'self'; frame-ancestors 'none'&#10;strict-transport-security: max-age=31536000; includeSubDomains; preload&#10;x-frame-options: DENY&#10;x-content-type-options: nosniff&#10;referrer-policy: no-referrer&#10;permissions-policy: camera=(), microphone=(), geolocation=()"></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="analyzeHeaders()">Analyze Headers</button>
+          <button class="btn btn-dim" onclick="loadSampleHeaders()">Load Sample</button>
+          <button class="btn btn-dim" onclick="clearHeaderChecker()">Clear</button>
+          <button class="btn btn-primary" onclick="copyHeaderReport()">Copy Report</button>
+        </div>
+        <div class="alert alert-info">Browser fetch can only read headers exposed by CORS. Paste mode is the reliable mode for full assessments.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-green"></span>Normalized Headers</div>
+        <div class="snippet-box" id="headerNormalized">Run analysis to see normalized headers.</div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-orange"></span>Security Score</div>
+        <div id="headerScorePanel" class="score-panel">
+          <div class="score-ring" id="headerScoreRing"><b>0</b></div>
+          <div>
+            <div class="deck-title" style="font-size:18px;">Waiting for headers</div>
+            <div class="score-copy">Checks include CSP, HSTS, XFO/frame-ancestors, MIME sniffing, referrer policy, permissions policy, CORS, server leaks, and Set-Cookie flags.</div>
+          </div>
+        </div>
+        <div class="mini-grid" id="headerMiniGrid"></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-red"></span>Findings</div>
+        <div class="finding-list" id="headerFindings">
+          <div class="finding info"><strong>No analysis yet</strong>Paste headers and run the checker.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="tab-iframe">
+  <div class="section-header">
+    <div class="section-title">Iframe <span class="hl">Checker</span></div>
+    <div class="section-desc">Audit iframe embeds, sandbox posture, permissions, referrer behavior, and clickjacking defenses from HTML plus optional response headers.</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-icon">IF</div><div><div class="stat-num" id="if-count-stat">0</div><div class="stat-label">IFRAMES FOUND</div></div></div>
+    <div class="stat-card"><div class="stat-icon">SC</div><div><div class="stat-num" id="if-score-stat">0</div><div class="stat-label">IFRAME SCORE</div></div></div>
+    <div class="stat-card"><div class="stat-icon">CJ</div><div><div class="stat-num" id="if-frame-stat">?</div><div class="stat-label">FRAMING POLICY</div></div></div>
+  </div>
+  <div class="premium-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-cyan"></span>Iframe HTML Input</div>
+        <textarea id="iframeInput" rows="10" placeholder="Paste iframe tags or full HTML here...&#10;&#10;<iframe src=&quot;https://example.com/widget&quot; sandbox=&quot;allow-scripts&quot; referrerpolicy=&quot;no-referrer&quot; title=&quot;Example widget&quot; loading=&quot;lazy&quot;></iframe>"></textarea>
+        <div class="card-title" style="margin-top:14px;"><span class="dot dot-orange"></span>Optional Page Headers</div>
+        <textarea id="iframeHeaderInput" rows="5" placeholder="Paste page response headers to check X-Frame-Options and CSP frame-ancestors..."></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-green" onclick="analyzeIframes()">Analyze Iframes</button>
+          <button class="btn btn-dim" onclick="loadSampleIframe()">Load Sample</button>
+          <button class="btn btn-dim" onclick="clearIframeChecker()">Clear</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-green"></span>Safe Iframe Builder</div>
+        <div class="input-row">
+          <span class="input-label">SRC:</span>
+          <input type="url" id="safeIframeSrc" placeholder="https://example.com/widget">
+        </div>
+        <div class="input-row">
+          <span class="input-label">TITLE:</span>
+          <input type="text" id="safeIframeTitle" placeholder="Descriptive iframe title" value="Embedded content">
+        </div>
+        <div class="input-row">
+          <span class="input-label">SANDBOX:</span>
+          <select id="safeIframeSandbox">
+            <option value="">Strict sandbox (recommended)</option>
+            <option value="allow-scripts">allow-scripts</option>
+            <option value="allow-scripts allow-forms">allow-scripts allow-forms</option>
+            <option value="allow-scripts allow-same-origin">allow-scripts allow-same-origin (trusted only)</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="buildSafeIframe()">Build Snippet</button>
+          <button class="btn btn-green" onclick="previewSafeIframe()">Preview</button>
+          <button class="btn btn-dim" onclick="copyEl('safeIframeSnippet')">Copy Snippet</button>
+        </div>
+        <div class="snippet-box" id="safeIframeSnippet">Configure a safe iframe snippet above.</div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-orange"></span>Iframe Score</div>
+        <div class="score-panel">
+          <div class="score-ring" id="iframeScoreRing"><b>0</b></div>
+          <div>
+            <div class="deck-title" style="font-size:18px;">Waiting for iframe HTML</div>
+            <div class="score-copy">Checks include sandbox, dangerous src values, permissions, title, lazy loading, referrer policy, srcdoc, and parent anti-framing headers.</div>
+          </div>
+        </div>
+        <div class="mini-grid" id="iframeMiniGrid"></div>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-red"></span>Findings</div>
+        <div class="finding-list" id="iframeFindings">
+          <div class="finding info"><strong>No analysis yet</strong>Paste iframe HTML and run the checker.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-cyan"></span>Sandbox Preview</div>
+        <div class="iframe-preview" id="iframePreview">
+          <span style="color:var(--text-dim);font-size:11px;">Build a snippet, then preview it here.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="tab-cookie">
+  <div class="section-header">
+    <div class="section-title">Cookie <span class="hl">Analyzer</span></div>
+    <div class="section-desc">Parse, decode and security-audit HTTP cookies</div>
+  </div>
+  <div class="cookie-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-orange"></span>Cookie String Input</div>
+        <textarea id="cookieInput" rows="5" placeholder="Paste raw cookie header value or Set-Cookie header...&#10;&#10;e.g. session=abc123; HttpOnly; Secure; SameSite=Strict; Path=/; Domain=.example.com; Expires=Wed, 01 Jan 2025 00:00:00 GMT&#10;&#10;Or paste multiple cookies (one per line)"></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="parseCookies()">🍪 Analyze Cookies</button>
+          <button class="btn btn-green" onclick="loadSampleCookie()">📋 Load Sample</button>
+          <button class="btn btn-dim" onclick="clearCookies()">🗑 Clear</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="dot dot-cyan"></span>Cookie Decoder</div>
+        <textarea id="cookieDecodeInput" rows="3" placeholder="Paste encoded cookie value (URL-encoded, Base64, JWT...)"></textarea>
+        <div style="display:flex;gap:6px;margin:8px 0;flex-wrap:wrap;">
+          <button class="btn btn-dim" onclick="decodeCookieVal('url')">URL Decode</button>
+          <button class="btn btn-dim" onclick="decodeCookieVal('b64')">Base64 Decode</button>
+          <button class="btn btn-dim" onclick="decodeCookieVal('b64url')">Base64URL</button>
+          <button class="btn btn-dim" onclick="decodeCookieVal('hex')">Hex Decode</button>
+          <button class="btn btn-dim" onclick="decodeCookieVal('jwt')">As JWT</button>
+        </div>
+        <div class="output-box" id="cookieDecodeOutput" style="min-height:40px;">
+          <button class="copy-corner" onclick="copyEl('cookieDecodeOutput')">⎘</button>
+          <span style="color:var(--text-dim);">Decoded value appears here...</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-green"></span>Security Audit</div>
+        <div id="cookieAudit" style="min-height:120px;font-size:11px;color:var(--text-dim);">
+          Paste and analyze cookies to see security flags.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-cyan"></span>Parsed Attributes</div>
+        <div id="cookieParsed" style="min-height:80px;font-size:11px;color:var(--text-dim);">
+          Cookie attributes appear here after analysis.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie Security Checklist -->
+  <div class="card" style="margin-top:16px;">
+    <div class="card-title"><span class="dot dot-red"></span>Cookie Security Checklist</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;" id="cookieChecklist">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<div class="tab-pane" id="tab-privacy">
+  <div class="section-header">
+    <div class="section-title">Privacy Policy <span class="hl">& Tips</span></div>
+    <div class="section-desc">Browser-only privacy notes, responsible-use terms, and an optional PayPal tip link.</div>
+  </div>
+  <div class="premium-grid">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-green"></span>Privacy Policy</div>
+        <div class="privacy-copy">
+          <p><strong>Last updated:</strong> April 26, 2026</p>
+          <p>ReconKit Pro is a static, browser-only security research toolkit. The tools run locally in your browser. The app does not operate a backend server and does not intentionally collect, store, sell, or transmit the content you paste into the tools.</p>
+          <p>Inputs such as domains, dorks, JWTs, cookies, headers, iframe HTML, secrets, URLs, and policy settings are processed client-side. Theme preferences may be saved in your browser's localStorage so the selected theme persists after reload.</p>
+          <p>The app may use third-party assets such as Google Fonts. Your browser may request those assets directly from their providers, and those providers may receive standard web request metadata such as IP address, user agent, and referrer.</p>
+          <p>Buttons that open Google, GitHub, or PayPal send you to those third-party services. Once you click an outbound link, their privacy policies and terms apply.</p>
+          <p>This site sets no first-party cookies. Clipboard actions happen only when you click a copy button.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-orange"></span>Responsible Use</div>
+        <div class="privacy-copy">
+          <p>Use this toolkit only for systems you own, systems you are explicitly authorized to test, bug bounty scopes where the activity is allowed, labs, CTFs, and education.</p>
+          <p>The toolkit is provided as-is, without warranty. You are responsible for complying with applicable laws, program rules, contracts, and disclosure requirements.</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card tip-card" style="margin-bottom:16px;">
+        <div class="card-title"><span class="dot dot-cyan"></span>Buy Me Tips via PayPal</div>
+        <div class="tip-mark">PayPal</div>
+        <p class="tip-copy">If ReconKit Pro helps your workflow, you can support the project with an optional tip. Tips are processed by PayPal, not by this static site.</p>
+        <a class="btn btn-green tip-button" href="https://www.paypal.com/paypalme/YOUR_PAYPAL_USERNAME" target="_blank" rel="noopener noreferrer">
+          Tip via PayPal
+        </a>
+        <div class="alert alert-info">Replace <code>YOUR_PAYPAL_USERNAME</code> in this file with your real PayPal.me username before publishing.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot dot-red"></span>Contact / Reports</div>
+        <div class="privacy-copy">
+          <p>For privacy questions, abuse reports, or takedown requests, add your preferred contact email here before publishing.</p>
+          <p><code>security@example.com</code></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div>
+    <strong>ReconKit Pro</strong>
+    <span>Browser-only security research toolkit. Authorized testing only.</span>
+  </div>
+  <div class="footer-links">
+    <button type="button" onclick="switchTab('privacy')">Privacy Policy</button>
+    <a href="https://www.paypal.com/paypalme/YOUR_PAYPAL_USERNAME" target="_blank" rel="noopener noreferrer">Tip via PayPal</a>
+  </div>
+</footer>
+
+<script src="reconkit-pro.js" defer></script>
+</body>
+</html>
