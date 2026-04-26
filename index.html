@@ -84,7 +84,7 @@
 <!-- ══════════════════════════════════════════════════════
      TAB 1: GOOGLE DORKS
 ══════════════════════════════════════════════════════ -->
-<div class="tab-pane active" id="tab-google">
+<!--<div class="tab-pane active" id="tab-google">
   <div class="section-header">
     <div class="section-title">Google <span class="hl">Dorks</span> Techniques</div>
     <div class="section-desc">Advanced Google search operators for OSINT and bug bounty reconnaissance</div>
@@ -127,6 +127,43 @@
     <div class="pagination" id="gdPagination"></div>
   </div>
 </div>
+
+
+  
+<!-- ══════════════════════════════════════════════════════
+     TAB 1: GOOGLE DORKS
+══════════════════════════════════════════════════════ -->
+    <article class="panel" id="p-google" aria-labelledby="p-google-h">
+    <header class="panel-head">
+      <span class="ico"><i data-lucide="search-code"></i></span>
+      <div>
+        <h3 id="p-google-h">Google Dorks Generator</h3>
+        <div class="sub">1,500+ ready-to-fire operators. Filter by category, search, copy, or open in Google.</div>
+      </div>
+      <button class="btn btn-icon close" data-close aria-label="Close"><i data-lucide="x"></i></button>
+    </header>
+    <div class="panel-body">
+      <div class="row mb-12">
+        <div class="field" style="flex:2">
+          <label for="gDomain">Target domain</label>
+          <input class="input mono" id="gDomain" placeholder="example.com" autocomplete="off" />
+        </div>
+        <div class="field" style="flex:2">
+          <label for="gSearch">Search dorks</label>
+          <input class="input" id="gSearch" placeholder="filter by keyword: ext, admin, env…" />
+        </div>
+        <div class="field" style="flex:1">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" id="gGenerate"><i data-lucide="play" style="width:14px;height:14px"></i> Generate</button>
+        </div>
+      </div>
+      <div class="dork-shell">
+        <aside class="dork-side" id="gCats" aria-label="Categories"></aside>
+        <div class="dork-list" id="gList"></div>
+      </div>
+    </div>
+  </article>
+
 
 <!-- ══════════════════════════════════════════════════════
      TAB 2: GITHUB RECON
